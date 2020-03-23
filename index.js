@@ -71,4 +71,15 @@ app.delete('/photos', (req, res) => {
   })()
 })
 
+app.delete('/photos/:filename', (req, res) => {
+  (async () => {
+    try {
+      await unlink(`uploads/${req.params.filename}`);
+      res.send({ result: 'success' })
+    } catch (err) {
+      res.send({ result: err });
+    }
+  })()
+}
+
 app.listen(4000)
