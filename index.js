@@ -1,6 +1,9 @@
 const express = require('express')
 const multer = require('multer')
 const fs = require('fs')
+const util = require('util');
+const readdir = util.promisify(fs.readdir);
+const unlink = util.promisify(fs.unlink);
 
 const app = express()
 const storage = multer.diskStorage({
@@ -53,6 +56,19 @@ app.get('/photos', (req, res) => {
     });
     res.send(files)
   });
+})
+
+app.delete('/photos', (req, res) => {
+  (async () => {
+    try {
+      const files = await readdir('uploads');
+      const unlinkPromises = files.map(filename => unlink(`uploads/${filename}`));
+      await Promise.all(unlinkPromises);
+      res.send({ result: 'success' })
+    } catch (err) {
+      res.send({ result: err });
+    }
+  })()
 })
 
 app.listen(4000)
