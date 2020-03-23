@@ -1,5 +1,6 @@
 const express = require('express')
 const multer = require('multer')
+const fs = require('fs')
 
 const app = express()
 const storage = multer.diskStorage({
@@ -36,6 +37,19 @@ app.post('/photos', upload.array('photos'), (req, res) => {
   res.send(req.files.map(file => {
     return { dest: `/photos/${file.filename}` }
   }))
+})
+
+app.get('/photos', (req, res) => {
+  fs.readdir('uploads', (err, filesName) => {
+    const files = []
+    filesName.forEach(file => {
+      files.push({
+        url: req.protocol + "://" + req.headers.host + '/photos/' + file,
+        name: file
+      })
+    });
+    res.send(files)
+  });
 })
 
 app.listen(3000)
