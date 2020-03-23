@@ -35,7 +35,10 @@ app.use('/photos', express.static('uploads'))
 
 app.post('/photos', upload.array('photos'), (req, res) => {
   res.send(req.files.map(file => {
-    return { dest: `/photos/${file.filename}` }
+    return {
+      url: req.protocol + "://" + req.headers.host + '/photos/' + file.filename,
+      name: file.filename
+    }
   }))
 })
 
@@ -52,4 +55,4 @@ app.get('/photos', (req, res) => {
   });
 })
 
-app.listen(3000)
+app.listen(4000)
