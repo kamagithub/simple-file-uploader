@@ -80,6 +80,6 @@ app.delete('/photos/:filename', (req, res) => {
       res.send({ result: err });
     }
   })()
-}
+})
 
 app.listen(4000)
