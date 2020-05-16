@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const multer = require('multer')
 const fs = require('fs')
 const util = require('util');
@@ -6,6 +7,7 @@ const readdir = util.promisify(fs.readdir);
 const unlink = util.promisify(fs.unlink);
 
 const app = express()
+app.use(cors())
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, './uploads')
