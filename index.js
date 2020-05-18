@@ -35,7 +35,6 @@ const upload = multer({
 })
 
 
-app.use(express.static('public'))
 app.use('/photos', express.static('uploads'))
 
 function verifyToken(req, res, next) {
