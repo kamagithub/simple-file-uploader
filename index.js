@@ -38,6 +38,17 @@ const upload = multer({
 app.use(express.static('public'))
 app.use('/photos', express.static('uploads'))
 
+function verifyToken(req, res, next) {
+  var token = req.headers['x-access-token'];
+  if (token && token === 'od0zoE9JfjkeUi0gvsXG') {
+    next();
+  } else {
+    return res.status(404).send()
+  }
+}
+
+app.use(verifyToken)
+
 app.post('/photos', upload.array('photos'), (req, res) => {
   res.send(req.files.map(file => {
     return {
