@@ -3,6 +3,7 @@ const cors = require('cors')
 const multer = require('multer')
 const fs = require('fs')
 const util = require('util');
+const { v4: uuidv4 } = require('uuid');
 const readdir = util.promisify(fs.readdir);
 const unlink = util.promisify(fs.unlink);
 
@@ -13,7 +14,9 @@ const storage = multer.diskStorage({
     cb(null, './uploads')
   },
   filename: (req, file, cb) => {
-    cb(null, new Date().toISOString() + '-' + file.originalname)
+    const extension = file.originalname.split('.').pop()
+    const uuidFileName = uuidv4() + '.' + extension
+    cb(null, uuidFileName)
   }
 })
 
